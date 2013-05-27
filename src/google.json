@@ -1,0 +1,5 @@
+{
+  "clientID": "abc123",
+  "clientSecret": "zyx987",
+  "callbackURL": "http://localhost/oauth2/callback"
+}

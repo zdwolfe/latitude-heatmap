@@ -1,0 +1,14 @@
+{
+  "name": "locationheatmap",
+  "version": "0.0.0",
+  "scripts": {
+    "start": "node app"
+  },
+  "dependencies": {
+    "express": "*",
+    "ejs": "*",
+    "restler": "*",
+    "passport": "*",
+    "passport-google": "*"
+  }
+}

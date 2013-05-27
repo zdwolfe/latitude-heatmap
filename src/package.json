@@ -9,6 +9,6 @@
     "ejs": "*",
     "restler": "*",
     "passport": "*",
-    "passport-google": "*"
+    "passport-google-oauth": "*"
   }
 }

@@ -75,6 +75,10 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
+app.get('/heatmap', function(req, res) {
+  res.render('heatmap');
+});
+
 app.listen(3000);
 
 function ensureAuthenticated(req, res, next) {

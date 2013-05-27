@@ -1,5 +1,6 @@
 var restler = require('restler');
-var multiRequest = function(accessToken, maxTime, minTime, callback, results) {
+var multiRequest = function(accessToken, maxTime, minTime, stepMinTime, callback, results) {
+  console.log('multiRequest('+accessToken+','+maxTime+','+minTime+','+stepMinTime+')');
   if (!results) {
     results = [];
   }
@@ -9,27 +10,32 @@ var multiRequest = function(accessToken, maxTime, minTime, callback, results) {
   if (maxTime) {
     url += "&max-time=" + maxTime;
   }
-  if (minTime) {
-    url += "&min-time=" + minTime;
+  if (stepMinTime) {
+    url += "&min-time=" + stepMinTime;
   }
   url += "&access_token=" + accessToken;
+  console.log('url = ' + url);
   restler.get(url).on('complete',function(res) {
+    console.log('restler.on(complete)');
     if (!res.data) { return; }
     var items = res.data.items;
+    console.log('items.length='+items.length);
     results = results.concat(items);
+    var lastItem = res.data.items[res.data.items.length - 1];
 
     console.log('results.length = ' + results.length);
     if (results.length >= 50 ||
-        items.length <= 0 ) {
+        items.length <= 0 ||
+        stepMinTime < minTime) {
       console.log("DONE!");
       return results;
     }
 
-    var oldestTime = items[items.length - 1].timestampMs + 1;
-    console.log('oldestTime = ' + oldestTime);
-    return multiRequest(accessToken, maxTime, oldestTime, callback, results);
+    var newStepMinTime = lastItem.timestampMs + 1;
+    console.log('newStepMinTime = ' + newStepMinTime);
+    return multiRequest(accessToken, maxTime, minTime, newStepMinTime, callback, results);
 
   });
 };
-var accessToken = "ya29.AHES6ZQk_7QXal2kvqoXUaDUPEzBIKoXrYtNV2V5156p9kE"; // will eventually be grabbed from web app
-multiRequest(accessToken);
+var accessToken = "ya29.AHES6ZQWP-p8Cy0On_dphJTQwoxhL9GFsyRzZNKE8j5L3Y4"; // will eventually be grabbed from web app
+multiRequest(accessToken, 1369573200000, 1369584000000);

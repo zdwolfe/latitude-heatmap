@@ -1,41 +1,69 @@
 var restler = require('restler');
-var multiRequest = function(accessToken, maxTime, minTime, stepMinTime, callback, results) {
-  console.log('multiRequest('+accessToken+','+maxTime+','+minTime+','+stepMinTime+')');
-  if (!results) {
-    results = [];
-  }
+var DEBUG = 1;
 
-  var baseUrl = "https://www.googleapis.com/latitude/v1/location?granularity=best&fields=items(latitude%2Clongitude%2CtimestampMs)&max-results=10";
-  var url = baseUrl;
-  if (maxTime) {
-    url += "&max-time=" + maxTime;
-  }
-  if (stepMinTime) {
-    url += "&min-time=" + stepMinTime;
-  }
-  url += "&access_token=" + accessToken;
-  console.log('url = ' + url);
-  restler.get(url).on('complete',function(res) {
-    console.log('restler.on(complete)');
-    if (!res.data) { return; }
-    var items = res.data.items;
-    console.log('items.length='+items.length);
-    results = results.concat(items);
-    var lastItem = res.data.items[res.data.items.length - 1];
-
-    console.log('results.length = ' + results.length);
-    if (results.length >= 50 ||
-        items.length <= 0 ||
-        stepMinTime < minTime) {
-      console.log("DONE!");
-      return results;
+function debug(message) {
+    if (DEBUG == 1) {
+        console.log(message);
     }
+    return;
+}
 
-    var newStepMinTime = lastItem.timestampMs + 1;
-    console.log('newStepMinTime = ' + newStepMinTime);
-    return multiRequest(accessToken, maxTime, minTime, newStepMinTime, callback, results);
+function _multiRequest(d, callback, items) {
+    items = items || [];
+    var request = getRequest(d);
+    restler.get(request).on('success', function(response, data) {
+        if (!response || !response.data || !response.data.items) {
+            debug('response = ' + JSON.stringify(response));
+            return;
+        }
+        items = items.concat(response.data.items);
+        if (response.data && response.data.items && response.data.items < d.maxresults) {
+            debug('response.data.items < d.maxresults');
+            return callback(items);
+        } else {
+            // Items at the end of response.data.items are older than items at the beginning.
+            // Therefore the last item in response.data.items is the 'oldest', and should be
+            // the next request's newest item.
+            // We subtract 1 ms because we don't want the oldest item again
+            d.newest = response.data.items[response.data.items.length].timestampMs - 1;
+            debug('return _multiRequest');
+            return _multiRequest(d,callback,items);
+        } 
+        debug('reached end');
+    });
+}
 
-  });
-};
-var accessToken = "ya29.AHES6ZQWP-p8Cy0On_dphJTQwoxhL9GFsyRzZNKE8j5L3Y4"; // will eventually be grabbed from web app
-multiRequest(accessToken, 1369573200000, 1369584000000);
+function multiRequest(d, callback) { 
+    return _multiRequest(d,callback);
+}
+
+function getRequest(d) {
+    d.newest = d.newest || (new Date()).getTime();
+    d.oldest = d.oldest || 0;
+    d.granularity = d.granularity || "best";
+    d.fields = d.fields || "items";
+    d.maxresults = d.maxresults || "1000";
+
+    if (!d.baseUrl) {  return null; }
+    var request = d.baseUrl;
+    request += "?fields=" + d.fields;
+    request += "&granularity=" + d.granularity;
+    request += "&max-results=" + d.maxresults;
+    request += "&min-time=" + d.oldest;
+    request += "&max-time=" + d.newest;
+    request += "&access_token=" + d.accesstoken;
+
+    debug('getRequest request ' + request);
+    return request;
+}
+
+var accesstoken = "ya29.AHES6ZThc_xgoOZCxX6jYPNumKme6o8rWm5Oou13rpAsEon1sSZavFat"; // will eventually be grabbed from web app
+multiRequest({
+    "accesstoken": accesstoken,
+    "baseUrl": "https://www.googleapis.com/latitude/v1/location",
+    "granularity": "best",
+    "fields": "items(latitude%2Clongitude%2CtimestampMs)",
+    "maxresults": 10
+}, function(response) {
+    debug(JSON.stringify(response));
+});

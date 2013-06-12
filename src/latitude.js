@@ -1,5 +1,6 @@
 var restler = require('restler');
-var DEBUG = 1;
+var DEBUG = 0;
+var INFO = 1;
 
 function debug(message) {
     if (DEBUG == 1) {
@@ -8,28 +9,32 @@ function debug(message) {
     return;
 }
 
+function info(message) {
+    if (INFO == 1) {
+        console.log(message);
+    }
+    return;
+}
+
 function _multiRequest(d, callback, items) {
     items = items || [];
     var request = getRequest(d);
-    restler.get(request).on('success', function(response, data) {
-        if (!response || !response.data || !response.data.items) {
-            debug('response = ' + JSON.stringify(response));
-            return;
-        }
-        items = items.concat(response.data.items);
-        if (response.data && response.data.items && response.data.items < d.maxresults) {
-            debug('response.data.items < d.maxresults');
-            return callback(items);
+    restler.get(request).on('success', function(response) {
+        if (response.data && response.data.items) {
+            debug(JSON.stringify(response.data.items));
+            if (response.data.items[response.data.items.length-1].timestampMs < d.oldest) {
+                for (var i = 0; i < response.data.items.length; i++) {
+                    items.push(resposne.data.items[i]);
+                }
+                return callback(items);
+            } else {
+                items = items.concat(response.data.items);
+                d.newest = response.data.items[response.data.items.length - 1].timestampMs - 1;
+                return _multiRequest(d, callback, items);
+            }
         } else {
-            // Items at the end of response.data.items are older than items at the beginning.
-            // Therefore the last item in response.data.items is the 'oldest', and should be
-            // the next request's newest item.
-            // We subtract 1 ms because we don't want the oldest item again
-            d.newest = response.data.items[response.data.items.length].timestampMs - 1;
-            debug('return _multiRequest');
-            return _multiRequest(d,callback,items);
-        } 
-        debug('reached end');
+            callback(items);
+        }
     });
 }
 
@@ -57,13 +62,15 @@ function getRequest(d) {
     return request;
 }
 
-var accesstoken = "ya29.AHES6ZThc_xgoOZCxX6jYPNumKme6o8rWm5Oou13rpAsEon1sSZavFat"; // will eventually be grabbed from web app
+/*
 multiRequest({
-    "accesstoken": accesstoken,
+    "accesstoken": "ya29.AHES6ZRR9D_k_i4BEBUro-_fGtZrUy9wk-WOj9b6Emv3gaIaQDnYf80V",
     "baseUrl": "https://www.googleapis.com/latitude/v1/location",
     "granularity": "best",
     "fields": "items(latitude%2Clongitude%2CtimestampMs)",
-    "maxresults": 10
+    "maxresults": 1000,
+    "oldest": "1370896150000"
 }, function(response) {
-    debug(JSON.stringify(response));
+    info(JSON.stringify(response));
 });
+*/

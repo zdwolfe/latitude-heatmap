@@ -1,6 +1,0 @@
-{
-  "clientID": "740421658448.apps.googleusercontent.com",
-  "clientSecret": "ONTyX2nK2Deoddf8izG6mETc",
-  "authURL": "http://localhost:3000/oauth2",
-  "callbackURL": "http://localhost:300/oauth2/callback"
-}

@@ -1,6 +1,6 @@
 var restler = require('restler');
 var DEBUG = 1;
-var INFO = 1;
+var INFO = 0;
 
 function debug(message) {
     if (DEBUG == 1) {
@@ -21,49 +21,75 @@ function _multiRequest(d, callback, items) {
     var request = getRequest(d);
     restler.get(request).on('success', function(response) {
         if (response.data && response.data.items) {
-            debug(JSON.stringify(response.data.items));
             if (response.data.items[response.data.items.length-1].timestampMs < d.oldest) {
                 for (var i = 0; i < response.data.items.length; i++) {
                     items.push(resposne.data.items[i]);
                 }
-                return prepareData(callback(items));
+                return callback(prepareData(items));
             } else {
                 items = items.concat(response.data.items);
                 d.newest = response.data.items[response.data.items.length - 1].timestampMs - 1;
                 return _multiRequest(d, callback, items);
             }
         } else {
-            prepareData(callback(items));
+            callback(prepareData(items));
         }
     });
 }
 
 exports.getData = function(d, callback) { 
-    return prepareData(_multiRequest(d,callback));
+    _multiRequest(d,callback);
 };
 
 function prepareData(data) {
-    debug("prepareData data.length = " + data.length);
+    if (!data) {
+        debug("prepareData data is undefined");
+        return;
+    }
     var retData = [];
-    var item = {};
     var locations = {};
     for (var i = 0; i < data.length; i++) {
-        item = {};
+        info("prepareData data[i] = " + JSON.stringify(data[i]));
+        info("prepareData data[i].hasOwnProperty('longitude') = " + data[i].hasOwnProperty("longitude"));
+        info("prepareData data[i].hasOwnProperty('latitude') = " + data[i].hasOwnProperty("latitude"));
         if (data[i].hasOwnProperty("longitude") && 
             data[i].hasOwnProperty("latitude")) {
+            info("prepareData in data[i].hasOwnProperty(long and lat) block");
             if (!locations.hasOwnProperty(data[i].longitude)) {
+                info("prepareData !hasproperty...longitude");
                 locations[data[i].longitude] = {};
             }
             if (!locations[data[i].longitude].hasOwnProperty(data[i].latitude)) {
+                info("prepareData !hasproperty...latitude");
                 locations[data[i].longitude][data[i].latitude] = {};
             }
             var count = locations[data[i].longitude][data[i].latitude].count || 0;
+            info("prepareData count = " + count);
             locations[data[i].longitude][data[i].latitude].count = count + 1;
         }
     }
     // at this point we have an object (locations) with properties for each longitude. each of 
     // those properties has a property for each latitude at that longitude
     // each of those properties has a count
+    for (var longitude in locations) {
+        for (var latitude in locations[longitude]) {
+            if (locations.hasOwnProperty(longitude) && 
+                locations[longitude].hasOwnProperty(latitude) &&
+                locations[longitude][latitude].hasOwnProperty("count")
+               ) {
+                retData.push({
+                    "lng": longitude,
+                    "lat": latitude,
+                    "count": locations[longitude][latitude].count
+                });
+            }
+        }
+    }
+    retData = { 
+        "max": retData.length,
+        "data" : retData 
+    };
+    return retData;
 }
 
 function getRequest(d) {
@@ -83,7 +109,7 @@ function getRequest(d) {
     request += "&max-time=" + d.newest;
     request += "&access_token=" + d.accesstoken;
 
-    debug('getRequest request ' + request);
+    info('getRequest request ' + request);
     return request;
 }
 

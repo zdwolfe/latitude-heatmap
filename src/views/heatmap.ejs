@@ -20,10 +20,10 @@
 <script type="text/javascript">
 var map;
 var heatmap; 
+var heatmapData = [];
 
 window.onload = function(){
 
-	var heatmapData = [];
 	var myLatlng = new google.maps.LatLng(48.3333, 16.35);
 	// sorry - this demo is a beta
 	// there is lots of work todo
@@ -44,12 +44,6 @@ window.onload = function(){
 	
 	heatmap = new HeatmapOverlay(map, {"radius":15, "visible":true, "opacity":60});
 	
-	// this is important, because if you set the data set too early, the latlng/pixel projection doesn't work
-	google.maps.event.addListenerOnce(map, "idle", function(){
-		heatmap.setDataSet(heatmapData);
-	});
-
-    heatmap.toggle();
 };
 
 $("#getData").click(function() {
@@ -59,6 +53,10 @@ $("#getData").click(function() {
            "oldest": "1370896150000" 
         },
         "success": function(data) {
+            heatmapData = data;
+            google.maps.event.addListenerOnce(map, "idle", function(){
+                heatmap.setDataSet(heatmapData);
+            });
         }
     });
 });

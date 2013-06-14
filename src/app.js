@@ -71,8 +71,9 @@ app.get('/heatmap', function(req, res) {
 
 app.get('/data', function(req, res) {
     d = {};
-    d.oldest = req.params.oldest;
-    d.newest = req.params.newest;
+    console.log("/data query = " + JSON.stringify(req.query));
+    d.oldest = req.query.oldest;
+    d.newest = req.query.newest;
     d.accesstoken = req.user.accessToken;
     latitude.getData(d, function(data) {
         res.json(data);

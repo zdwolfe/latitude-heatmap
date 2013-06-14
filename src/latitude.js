@@ -1,6 +1,6 @@
 var restler = require('restler');
-var DEBUG = 1;
-var INFO = 0;
+var DEBUG = 0;
+var INFO = 1;
 
 function debug(message) {
     if (DEBUG == 1) {
@@ -38,6 +38,12 @@ function _multiRequest(d, callback, items) {
 }
 
 exports.getData = function(d, callback) { 
+    info("getData d.oldest="+d.oldest);
+    info("getData d.newest="+d.newest);
+    var oldest = new Date(d.oldest);
+    var newest = new Date(d.newest);
+    info("getData oldest = " + oldest);
+    info("getData newest = " + newest);
     _multiRequest(d,callback);
 };
 
@@ -49,22 +55,22 @@ function prepareData(data) {
     var retData = [];
     var locations = {};
     for (var i = 0; i < data.length; i++) {
-        info("prepareData data[i] = " + JSON.stringify(data[i]));
-        info("prepareData data[i].hasOwnProperty('longitude') = " + data[i].hasOwnProperty("longitude"));
-        info("prepareData data[i].hasOwnProperty('latitude') = " + data[i].hasOwnProperty("latitude"));
+        debug("prepareData data[i] = " + JSON.stringify(data[i]));
+        debug("prepareData data[i].hasOwnProperty('longitude') = " + data[i].hasOwnProperty("longitude"));
+        debug("prepareData data[i].hasOwnProperty('latitude') = " + data[i].hasOwnProperty("latitude"));
         if (data[i].hasOwnProperty("longitude") && 
             data[i].hasOwnProperty("latitude")) {
-            info("prepareData in data[i].hasOwnProperty(long and lat) block");
+            debug("prepareData in data[i].hasOwnProperty(long and lat) block");
             if (!locations.hasOwnProperty(data[i].longitude)) {
-                info("prepareData !hasproperty...longitude");
+                debug("prepareData !hasproperty...longitude");
                 locations[data[i].longitude] = {};
             }
             if (!locations[data[i].longitude].hasOwnProperty(data[i].latitude)) {
-                info("prepareData !hasproperty...latitude");
+                debug("prepareData !hasproperty...latitude");
                 locations[data[i].longitude][data[i].latitude] = {};
             }
             var count = locations[data[i].longitude][data[i].latitude].count || 0;
-            info("prepareData count = " + count);
+            debug("prepareData count = " + count);
             locations[data[i].longitude][data[i].latitude].count = count + 1;
         }
     }
@@ -89,6 +95,7 @@ function prepareData(data) {
         "max": retData.length,
         "data" : retData 
     };
+    info("prepareData retData.data.length = " + retData.data.length);
     return retData;
 }
 

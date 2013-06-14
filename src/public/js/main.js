@@ -23,14 +23,29 @@ window.onload = function(){
     heatmap = new HeatmapOverlay(map, {"radius":15, "visible":true, "opacity":60});
 };
 
+
+$(function() {
+    $("#oldestDate").datepicker();
+    $("#newestDate").datepicker();
+});
+
+
 $("#getData").click(function() {
+    var oldestDate = $("#oldestDate").datepicker("getDate");
+    var newestDate = $("#newestDate").datepicker("getDate");
+    console.log("oldestDate = " + oldestDate);
+    console.log("newestDate = " + newestDate);
+    console.log('oldestDate.getTime() = ' + oldestDate.getTime());
+    console.log('newestDate.getTime() = ' + newestDate.getTime());
     $.ajax({
         "url": "/data",
+        "dataType": "json",
         "data": {
-           "oldest": "1370896150000" 
+           "oldest": oldestDate.getTime(),
+           "newest": newestDate.getTime()
         },
         "success": function(data) {
-            console.log("getData success callback, data.length="+data.length);
+            console.log("getData success callback, data="+JSON.stringify(data));
             heatmapData = data;
             google.maps.event.addListenerOnce(map, "idle", function(){
                 console.log("google maps eventlistener callback");

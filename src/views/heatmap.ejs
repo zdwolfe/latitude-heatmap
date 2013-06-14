@@ -10,58 +10,13 @@
         }
     </style>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
+    <script type="text/javascript" src="/js/jquery-1.10.1.min.js"></script>
+    <script type="text/javascript" src="/js/heatmap.js"></script>
+    <script type="text/javascript" src="/js/heatmap-gmaps.js"></script>
 </head>
 <body>
 <div id="heatmapArea"></div>
 <button id="getData">Get Location Heatmap</button>
-<script type="text/javascript" src="/js/jquery-1.10.1.min.js"></script>
-<script type="text/javascript" src="/js/heatmap.js"></script>
-<script type="text/javascript" src="/js/heatmap-gmaps.js"></script>
-<script type="text/javascript">
-var map;
-var heatmap; 
-var heatmapData = [];
-
-window.onload = function(){
-
-	var myLatlng = new google.maps.LatLng(48.3333, 16.35);
-	// sorry - this demo is a beta
-	// there is lots of work todo
-	// but I don't have enough time for eg redrawing on dragrelease right now
-	var myOptions = {
-	  zoom: 2,
-	  center: myLatlng,
-	  mapTypeId: google.maps.MapTypeId.ROADMAP,
-	  disableDefaultUI: false,
-	  scrollwheel: true,
-	  draggable: true,
-	  navigationControl: true,
-	  mapTypeControl: false,
-	  scaleControl: true,
-	  disableDoubleClickZoom: false
-	};
-	map = new google.maps.Map(document.getElementById("heatmapArea"), myOptions);
-	
-	heatmap = new HeatmapOverlay(map, {"radius":15, "visible":true, "opacity":60});
-	
-};
-
-$("#getData").click(function() {
-    $.ajax({
-        "url": "/data",
-        "data": {
-           "oldest": "1370896150000" 
-        },
-        "success": function(data) {
-            heatmapData = data;
-            google.maps.event.addListenerOnce(map, "idle", function(){
-                heatmap.setDataSet(heatmapData);
-            });
-        }
-    });
-});
-
-
-</script>
+<script type="text/javascript" src="/js/main.js"></script>
 </body>
 </html>

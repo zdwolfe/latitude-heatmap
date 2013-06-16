@@ -2,13 +2,11 @@ var map;
 var heatmap; 
 var heatmapData = [];
 
-window.onload = function(){
-    var myLatlng = new google.maps.LatLng(48.3333, 16.35);
-    // sorry - this demo is a beta
-    // there is lots of work todo
-    // but I don't have enough time for eg redrawing on dragrelease right now
+function positionSuccess(position) {
+    var coords = position.coords || position.coordinate || position;
+    var myLatlng = new google.maps.LatLng(coords.latitude, coords.longitude);
     var myOptions = {
-        zoom: 2,
+        zoom: 6,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
         disableDefaultUI: false,
@@ -21,8 +19,15 @@ window.onload = function(){
     };
     map = new google.maps.Map(document.getElementById("heatmapArea"), myOptions);
     heatmap = new HeatmapOverlay(map, {"radius":15, "visible":true, "opacity":60});
-};
+}
 
+function positionError(err) {
+    console.log("positionError err = " + JSON.stringify(err));
+}
+
+$(function() {
+    navigator.geolocation.getCurrentPosition(positionSuccess, positionError);
+});
 
 $(function() {
     $("#oldestDate").datepicker();

@@ -1,10 +1,10 @@
 <html>
 <head>
-    <link rel="stylesheet" href="/css/main.css"/>
     <link rel="stylesheet" href="/vendor/bootstrap/css/bootstrap.min.css"/>
     <link rel="stylesheet" href="/vendor/bootstrap-datepicker/datepicker.css"/>
     <link rel="stylesheet" href="/vendor/bootstrap-modal/css/bootstrap-modal.css"/>
-<!--    <link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>-->
+    <link href='http://fonts.googleapis.com/css?family=Lato:700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="/css/main.css"/>
     <script type="text/javascript" src="/vendor/jquery/jquery-1.10.1.min.js"></script>
     <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
     <script type="text/javascript" src="/vendor/bootstrap/js/bootstrap.min.js"></script>
@@ -20,10 +20,18 @@
 <div id="heatmap"></div>
 <div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="optionsModalLabel" aria-hidden="true">
     <div class="modal-body">
-        <input type="text" href="#" id="oldestDate" class="datePicker"/>
-        to 
-        <input type="text" id="newestDate" class="datePicker"/>
-        <button type="button" id="getData" class="btn">go</button>
+        <form>
+            <div class="input-prepend">
+                <input size="11" type="text" href="#" id="oldestDate" class="input-small"/>
+            </div>
+            <span id="toLabel">
+                to
+            </span>
+            <div class="input-append">
+                <input size="11" type="text" id="newestDate" class="input-small"/>
+            </div>
+        </form>
+        <button type="button" id="go" class="btn" data-loading-text="querying google latitude...">go</button>
     </div>
 </div>
 <script type="text/javascript" src="/js/main.js"></script>

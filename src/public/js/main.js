@@ -11,10 +11,10 @@ function positionSuccess(position) {
         zoom: 6,
         center: myLatlng,
         mapTypeId: google.maps.MapTypeId.ROADMAP,
-        disableDefaultUI: false,
+        disableDefaultUI: true,
         scrollwheel: true,
         draggable: true,
-        navigationControl: true,
+        navigationControl: false,
         mapTypeControl: false,
         scaleControl: true,
         disableDoubleClickZoom: false
@@ -24,7 +24,6 @@ function positionSuccess(position) {
 }
 
 function positionError(err) {
-    console.log("positionError err = " + JSON.stringify(err));
 }
 
 $(function() {
@@ -40,7 +39,7 @@ function initDatepickers() {
         oldestDate = new Date(ev.date.valueOf());
     });
     oldestDate = Date.today().last().week();
-    $("#oldestDate").datepicker('setValue', oldestDate);
+    $("#oldestDate").datepicker('setDate', oldestDate);
 
     $('#newestDate').datepicker({
         format: 'mm-dd-yyyy'
@@ -49,7 +48,7 @@ function initDatepickers() {
         newestDate = new Date(ev.date.valueOf());
     });
     newestDate = Date.today();
-    $("#newestDate").datepicker('setValue', newestDate);
+    $("#newestDate").datepicker('setDate', newestDate);
 }
 
 $(function() {
@@ -58,13 +57,10 @@ $(function() {
 });
 
 
-$("#getData").click(function() {
+$("#go").click(function() {
+    $(this).button("loading");
     var oldestDate = $("#oldestDate").datepicker("getDate");
     var newestDate = $("#newestDate").datepicker("getDate");
-    console.log("oldestDate = " + oldestDate);
-    console.log("newestDate = " + newestDate);
-    console.log('oldestDate.getTime() = ' + oldestDate.getTime());
-    console.log('newestDate.getTime() = ' + newestDate.getTime());
     $.ajax({
         "url": "/data",
         "dataType": "json",
@@ -73,12 +69,9 @@ $("#getData").click(function() {
            "newest": newestDate.getTime()
         },
         "success": function(data) {
-            console.log("getData success callback, data="+JSON.stringify(data));
             heatmapData = data;
-            google.maps.event.addListenerOnce(map, "idle", function(){
-                console.log("google maps eventlistener callback");
-                heatmap.setDataSet(heatmapData);
-            });
+            heatmap.setDataSet(heatmapData);
+            $("#optionsModal").modal("hide");
         }
     });
 });

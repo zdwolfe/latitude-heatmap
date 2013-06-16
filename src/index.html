@@ -15,21 +15,24 @@
     <script type="text/javascript" src="/vendor/heatmapjs/heatmap.js"></script>
     <script type="text/javascript" src="/vendor/heatmapjs/heatmap-gmaps.js"></script>
     <script type="text/javascript" src="/vendor/datejs/date.js"></script>
+    <script type="text/javascript" src="/vendor/spinjs/spin.min.js"></script>
+    <script type="text/javascript" src="/vendor/spinjs/jquery.spin.js"></script>
 </head>
 <body>
 <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 <div id="heatmap"></div>
+<div id="statusbar"><div id="spinner"></div></div>
 <div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="false">
     <div class="modal-body">
         <div id="options">
-            <div class="row">
+            <div id="datepickers" class="row">
                 <input size="11" type="text" href="#" id="oldestDate" class="input-small"/>
                 to
                 <input size="11" type="text" id="newestDate" class="input-small"/>
             </div>
             <div class="row">
                 <button type="button" id="go" class="btn" data-loading-text="Gathering Location Data...">Go</button>
-                <button type="button" id="authButton" class="btn" data-loading-text="Authenticating With Google...">Authenticate</button>
+                <button type="button" id="authButton" class="btn" data-loading-text="Authenticating With Google...">Authenticate With Google</button>
             </div>
         </div>
     </div>

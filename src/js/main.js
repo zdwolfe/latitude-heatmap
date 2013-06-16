@@ -23,6 +23,9 @@ function handleAuthResult(authResult) {
         return;
     }
     latitude.accessToken = authResult.access_token;
+    $("#authButton").hide();
+    $("#datepickers").show();
+    $("#go").show();
 }
 
 function handleClientLoad() {
@@ -34,25 +37,6 @@ function handleClientLoad() {
             immediate: true
         }, handleAuthResult);
     },1);
-}
-
-function getRequest(d) {
-    d.baseUrl = d.baseUrl || "https://www.googleapis.com/latitude/v1/location";
-    d.newest = d.newest || (new Date()).getTime();
-    d.oldest = d.oldest || d.newest - 2*24*60*60*1000;
-    d.granularity = d.granularity || "best";
-    d.fields = d.fields || "items(latitude%2Clongitude%2CtimestampMs)";
-    d.maxresults = d.maxresults || "1000";
-
-    if (!d.baseUrl) {  return null; }
-    var request = d.baseUrl;
-    request += "?fields=" + d.fields;
-    request += "&granularity=" + d.granularity;
-    request += "&max-results=" + d.maxresults;
-    request += "&min-time=" + d.oldest;
-    request += "&max-time=" + d.newest;
-    request += "&access_token=" + latitude.accessToken;
-    return request;
 }
 
 function makeLatitudeRequest(oldestDate, newestDate, callback) { 
@@ -185,9 +169,12 @@ $("#go").click(function() {
     var newestDate = $("#newestDate").datepicker("getDate").getTime();
 
     $("#optionsModal").modal("hide");
+    $("#statusbar").show();
+    $("#spinner").spin();
 
     makeLatitudeRequest(oldestDate, newestDate, function() {
-        console.log('latitude.getData callback!');
+        $("#spinner").stop();
+        $("#statusbar").fadeOut();
     });
 });
 

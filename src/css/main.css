@@ -14,6 +14,10 @@ body {
     margin-left: 4px;
 }
 
+#optionsModal {
+    padding: 32px;
+}
+
 #options {
     margin-left: 24px;
     text-align: center;
@@ -25,4 +29,33 @@ body {
 
 #newestDate {
     margin-left: 4px;
+}
+
+#datepickers {
+    display: none;
+}
+
+#go {
+    display: none;
+}
+
+#spinner {
+    height: 72px;
+    width: 72px;
+    margin: auto;
+}
+
+#statusbar {
+    padding-top: 8px;
+    display: none;
+    background-color: #14393D;
+    color: #BAC3E8;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    width: 100%;
+    height: 96px;
+    opacity: 0.6;
+    filter:alpha(opacity=60);
 }

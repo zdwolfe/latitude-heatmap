@@ -14,7 +14,7 @@ var latitude = {
         "https://www.googleapis.com/auth/userinfo.email"
     ],
     clientId: "740421658448.apps.googleusercontent.com",
-    accesstoken: ""
+    accessToken: ""
 };
 
 function handleAuthResult(authResult) {

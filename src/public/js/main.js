@@ -1,6 +1,8 @@
 var map;
 var heatmap; 
 var heatmapData = [];
+var oldestDate = "";
+var newestDate = "";
 
 function positionSuccess(position) {
     var coords = position.coords || position.coordinate || position;
@@ -30,10 +32,24 @@ $(function() {
 });
 
 $(function() {
-    $( "#oldestDate" ).datepicker();
-    $("#oldestDate").datepicker('setDate', '-7');
-    $( "#newestDate" ).datepicker();
-    $("#newestDate").datepicker('setDate', '+0');
+    // initialize date pickers
+    $('#oldestDate').datepicker({
+        format: 'mm-dd-yyyy'
+    }); 
+    $("#oldestDate").datepicker().on("changeDate", function(ev) {
+        oldestDate = new Date(ev.date.valueOf());
+    });
+    oldestDate = Date.today().last().week();
+    $("#oldestDate").datepicker('setValue', oldestDate);
+
+    $('#newestDate').datepicker({
+        format: 'mm-dd-yyyy'
+    }); 
+    $("#newestDate").datepicker().on("changeDate", function(ev) {
+        newestDate = new Date(ev.date.valueOf());
+    });
+    newestDate = Date.today();
+    $("#newestDate").datepicker('setValue', newestDate);
 });
 
 

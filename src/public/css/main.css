@@ -7,9 +7,6 @@ body {
 }
 
 #optionsModal {
+    margin-top: -40px;
     padding: 64px;
-}
-
-.datePicker {
-    z-index: 100000;
 }

@@ -53,7 +53,9 @@ function initDatepickers() {
 
 $(function() {
     initDatepickers();
-    $("#optionsModal").modal();
+    $('#optionsModal').modal({
+        width: "320px"
+    });
 });
 
 
@@ -64,6 +66,7 @@ $("#go").click(function() {
     $.ajax({
         "url": "/data",
         "dataType": "json",
+        "timeout": 0,
         "data": {
            "oldest": oldestDate.getTime(),
            "newest": newestDate.getTime()

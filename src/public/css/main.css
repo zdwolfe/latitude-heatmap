@@ -8,16 +8,21 @@ body {
     height: 100%;
 }
 
-#optionsModal {
-    margin-top: -40px;
-    padding: 64px;
-}
-
-.datePicker {
-    with: 64px;
-}
 
 #toLabel {
-    margin-right: 16px;
-    margin-left: 16px;
+    margin-right: 4px;
+    margin-left: 4px;
+}
+
+#options {
+    margin-left: 24px;
+    text-align: center;
+}
+
+#oldestDate {
+    margin-right: 4px;
+}
+
+#newestDate {
+    margin-left: 4px;
 }

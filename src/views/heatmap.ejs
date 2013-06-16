@@ -18,20 +18,18 @@
 </head>
 <body>
 <div id="heatmap"></div>
-<div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="optionsModalLabel" aria-hidden="true">
+<div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="false">
     <div class="modal-body">
-        <form>
-            <div class="input-prepend">
+        <div id="options">
+            <div class="row">
                 <input size="11" type="text" href="#" id="oldestDate" class="input-small"/>
-            </div>
-            <span id="toLabel">
                 to
-            </span>
-            <div class="input-append">
                 <input size="11" type="text" id="newestDate" class="input-small"/>
             </div>
-        </form>
-        <button type="button" id="go" class="btn" data-loading-text="querying google latitude...">go</button>
+            <div class="row">
+                <button type="button" id="go" class="btn" data-loading-text="querying google latitude...">go</button>
+            </div>
+        </div>
     </div>
 </div>
 <script type="text/javascript" src="/js/main.js"></script>

@@ -4,7 +4,6 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var http           = require('http');
 
 var google         = require('./google');
-var latitude       = require('./latitude');
 
 passport.serializeUser(function(user, done) {
   done(null, user);
@@ -66,18 +65,9 @@ app.get('/logout', function(req, res){
 });
 
 app.get('/heatmap', function(req, res) {
-    res.render('heatmap');
-});
-
-app.get('/data', function(req, res) {
-    d = {};
-    console.log("/data query = " + JSON.stringify(req.query));
-    d.oldest = req.query.oldest;
-    d.newest = req.query.newest;
-    d.accesstoken = req.user.accessToken;
-    latitude.getData(d, function(data) {
-        res.json(data);
-    });
+    console.log("/heatmap req.user.accessToken = " + req.user.accessToken);
+    console.log("/heatmap req.user= " + JSON.stringify(req.user));
+    res.render('heatmap', {"accesstoken": req.user.accessToken});
 });
 
 app.listen(3000);

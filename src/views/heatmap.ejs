@@ -33,5 +33,11 @@
     </div>
 </div>
 <script type="text/javascript" src="/js/main.js"></script>
+<script type="text/javascript" src="/js/latitude.js"></script>
+<script type="text/javascript">
+    if (latitude !== "undefined") {
+        latitude.accesstoken = "<%= accesstoken %>";
+    }
+</script>
 </body>
 </html>

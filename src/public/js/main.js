@@ -1,6 +1,9 @@
 var map;
 var heatmap; 
-var heatmapData = [];
+var heatmapData = {
+    "data": [],
+    "max": 0
+};
 var oldestDate = "";
 var newestDate = "";
 
@@ -63,19 +66,9 @@ $("#go").click(function() {
     $(this).button("loading");
     var oldestDate = $("#oldestDate").datepicker("getDate");
     var newestDate = $("#newestDate").datepicker("getDate");
-    $.ajax({
-        "url": "/data",
-        "dataType": "json",
-        "timeout": 0,
-        "data": {
-           "oldest": oldestDate.getTime(),
-           "newest": newestDate.getTime()
-        },
-        "success": function(data) {
-            heatmapData = data;
-            heatmap.setDataSet(heatmapData);
-            $("#optionsModal").modal("hide");
-        }
+$("#optionsModal").modal("hide");
+    latitude.getData(oldestDate, newestDate, function() {
+        console.log('latitude.getData callback!');
     });
 });
 

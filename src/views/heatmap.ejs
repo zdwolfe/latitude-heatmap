@@ -17,6 +17,7 @@
     <script type="text/javascript" src="/vendor/datejs/date.js"></script>
 </head>
 <body>
+<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 <div id="heatmap"></div>
 <div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="false">
     <div class="modal-body">
@@ -27,17 +28,12 @@
                 <input size="11" type="text" id="newestDate" class="input-small"/>
             </div>
             <div class="row">
-                <button type="button" id="go" class="btn" data-loading-text="querying google latitude...">go</button>
+                <button type="button" id="go" class="btn" data-loading-text="Gathering Location Data...">Go</button>
+                <button type="button" id="authButton" class="btn" data-loading-text="Authenticating With Google...">Authenticate</button>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript" src="/js/main.js"></script>
-<script type="text/javascript" src="/js/latitude.js"></script>
-<script type="text/javascript">
-    if (latitude !== "undefined") {
-        latitude.accesstoken = "<%= accesstoken %>";
-    }
-</script>
 </body>
 </html>

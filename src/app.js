@@ -65,9 +65,12 @@ app.get('/logout', function(req, res){
 });
 
 app.get('/heatmap', function(req, res) {
-    console.log("/heatmap req.user.accessToken = " + req.user.accessToken);
-    console.log("/heatmap req.user= " + JSON.stringify(req.user));
-    res.render('heatmap', {"accesstoken": req.user.accessToken});
+    //res.render('heatmap', {"accesstoken": req.user.accessToken});
+    res.render('heatmap');
+});
+
+app.get('/clientsideauth', function(req, res) {
+    res.render('clientsideauth');
 });
 
 app.listen(3000);

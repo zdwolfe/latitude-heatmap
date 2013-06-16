@@ -31,7 +31,7 @@ $(function() {
     navigator.geolocation.getCurrentPosition(positionSuccess, positionError);
 });
 
-$(function() {
+function initDatepickers() {
     // initialize date pickers
     $('#oldestDate').datepicker({
         format: 'mm-dd-yyyy'
@@ -50,6 +50,11 @@ $(function() {
     });
     newestDate = Date.today();
     $("#newestDate").datepicker('setValue', newestDate);
+}
+
+$(function() {
+    initDatepickers();
+    $("#optionsModal").modal();
 });
 
 

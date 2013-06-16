@@ -5,3 +5,11 @@ body {
 
 #heatmap {
 }
+
+#optionsModal {
+    padding: 64px;
+}
+
+.datePicker {
+    z-index: 100000;
+}

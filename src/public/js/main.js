@@ -17,7 +17,7 @@ function positionSuccess(position) {
         scaleControl: true,
         disableDoubleClickZoom: false
     };
-    map = new google.maps.Map(document.getElementById("heatmapArea"), myOptions);
+    map = new google.maps.Map(document.getElementById("heatmap"), myOptions);
     heatmap = new HeatmapOverlay(map, {"radius":15, "visible":true, "opacity":60});
 }
 
@@ -30,8 +30,10 @@ $(function() {
 });
 
 $(function() {
-    $("#oldestDate").datepicker();
-    $("#newestDate").datepicker();
+    $( "#oldestDate" ).datepicker();
+    $("#oldestDate").datepicker('setDate', '-7');
+    $( "#newestDate" ).datepicker();
+    $("#newestDate").datepicker('setDate', '+0');
 });
 
 

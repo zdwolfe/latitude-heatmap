@@ -32,7 +32,6 @@ body {
 }
 
 #datepickers {
-    display: none;
 }
 
 #go {
@@ -68,9 +67,21 @@ body {
     filter:alpha(opacity=85);
 }
 
-#message {
+.message {
     font-size: 16px;
     text-align: center;
     margin-top: 32px;
     display: none;
+}
+
+#gatherDataDialog {
+    display: none;
+}
+
+#authenticateDialog {
+    display: block;
+}
+
+#authenticationDialogHelp {
+    font-size: 10px;
 }

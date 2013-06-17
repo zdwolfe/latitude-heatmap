@@ -23,9 +23,10 @@ function handleAuthResult(authResult) {
         return;
     }
     latitude.accessToken = authResult.access_token;
-    $("#authButton").hide();
-    $("#datepickers").show();
-    $("#go").show();
+    $("#authenticateDialog").hide("slow", function() {
+        $("#gatherDataDialog").fadeIn("slow");
+        $("#go").show();
+    });
 }
 
 function handleClientLoad() {
@@ -59,7 +60,7 @@ function makeLatitudeRequest(oldestDate, newestDate, successCallback, failureCal
                 return makeLatitudeRequest(oldestDate, newestDate, successCallback);
             } else {
                 if (!heatmapData || !heatmapData.data || heatmapData.data.length <= 0) {
-                    return failureCallback("Couldn't get any data from Latitude! Have you recorded any?");
+                    return failureCallback();
                 } else {
                     return successCallback();
                 }
@@ -204,8 +205,7 @@ $("#go").click(function() {
         $("#spinner").stop();
         $("#spinner").fadeOut('fast', function() {
             $("#statusbar").removeClass("transparent").addClass("opaque");
-            $("#message").fadeIn();
-            $("#message").text(message);
+            $("#statusFailure").fadeIn();
         });
     });
 });

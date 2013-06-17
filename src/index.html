@@ -35,18 +35,30 @@
 <body>
 <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 <div id="heatmap"></div>
-<div id="statusbar" class="transparent"><div id="spinner"></div><div id="message">Gathering Data From Google Latitude...</div></div>
+<div id="statusbar" class="transparent">
+    <div id="spinner"></div>
+    <div id="statusFailure" class="message">Google Latitude Didn't Return Any Data. <a href="/help.html">Need help?</a></div>
+</div>
 <div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="false">
     <div class="modal-body">
         <div id="options">
-            <div id="datepickers" class="row">
-                <input size="11" type="text" href="#" id="oldestDate" class="input-small"/>
-                to
-                <input size="11" type="text" id="newestDate" class="input-small"/>
+            <div id="authenticateDialog">
+                <div class="row">
+                    <button type="button" id="authButton" class="btn" data-loading-text="Authenticating With Google...">Authenticate With Google</button>
+                </div>
+                <p id="authenticationDialogHelp" class="row">
+                Using location data stored on <a target="_blank" href="http://latitude.google.com">Google Latitude</a>, this tool forms a heatmap of where you spend your time. View our <a href="_blank" href="/faq.html">FAQ</a> for more information.
+                </p>
             </div>
-            <div class="row">
-                <button type="button" id="go" class="btn" data-loading-text="Gathering Location Data...">Go</button>
-                <button type="button" id="authButton" class="btn" data-loading-text="Authenticating With Google...">Authenticate With Google</button>
+            <div id="gatherDataDialog">
+                <div id="datepickers" class="row">
+                    <input size="11" type="text" href="#" id="oldestDate" class="input-small"/>
+                    to
+                    <input size="11" type="text" id="newestDate" class="input-small"/>
+                </div>
+                <div class="row">
+                    <button type="button" id="go" class="btn" data-loading-text="Gathering Location Data...">Go</button>
+                </div>
             </div>
         </div>
     </div>

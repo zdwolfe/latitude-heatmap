@@ -34,10 +34,6 @@ body {
 #datepickers {
 }
 
-#go {
-    display: none;
-}
-
 #spinner {
     height: 72px;
     width: 72px;
@@ -46,7 +42,6 @@ body {
 
 #statusbar {
     padding-top: 8px;
-    display: none;
     background-color: #14393D;
     color: #BAC3E8;
     position: fixed;
@@ -84,4 +79,23 @@ body {
 
 #authenticationDialogHelp {
     font-size: 10px;
+}
+
+.center { 
+    float: none;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.active {
+    display: block;
+}
+
+.inactive {
+    display: none;
+}
+
+.exampleImage {
+    width: 320px;
+    height: auto;
 }

@@ -176,7 +176,7 @@ $(function() {
 
     // initialize options modal
     $('#optionsModal').modal({
-        width: "320px"
+        width: "400px"
     });
 });
 

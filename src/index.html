@@ -35,9 +35,9 @@
 <body>
 <script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 <div id="heatmap"></div>
-<div id="statusbar" class="transparent">
+<div id="statusbar" class="transparent inactive">
     <div id="spinner"></div>
-    <div id="statusFailure" class="message">Google Latitude Didn't Return Any Data. <a href="/help.html">Need help?</a></div>
+    <div id="statusFailure" class="message">Google Latitude Didn't Return Any Data. <a href="/faq.html">Need help?</a></div>
 </div>
 <div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="false">
     <div class="modal-body">
@@ -46,9 +46,13 @@
                 <div class="row">
                     <button type="button" id="authButton" class="btn" data-loading-text="Authenticating With Google...">Authenticate With Google</button>
                 </div>
-                <p id="authenticationDialogHelp" class="row">
-                Using location data stored on <a target="_blank" href="http://latitude.google.com">Google Latitude</a>, this tool forms a heatmap of where you spend your time. View our <a href="_blank" href="/faq.html">FAQ</a> for more information.
-                </p>
+                <div id="authenticationDialogHelp" class="row">
+                    <p>
+                        This tool uses <a target="_blank" href="http://latitude.google.com">Google Latitude</a> to generate a personalized location heatmap.
+                        <br>
+                        View our <a target="_blank" href="/faq.html">FAQ</a> for privacy information and prerequistes.
+                    </p>
+                </div>
             </div>
             <div id="gatherDataDialog">
                 <div id="datepickers" class="row">
@@ -57,7 +61,7 @@
                     <input size="11" type="text" id="newestDate" class="input-small"/>
                 </div>
                 <div class="row">
-                    <button type="button" id="go" class="btn" data-loading-text="Gathering Location Data...">Go</button>
+                    <button type="button" id="go" class="btn inactive" data-loading-text="Gathering Location Data...">Go</button>
                 </div>
             </div>
         </div>

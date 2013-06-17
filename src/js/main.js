@@ -39,7 +39,7 @@ function handleClientLoad() {
     },1);
 }
 
-function makeLatitudeRequest(oldestDate, newestDate, callback) { 
+function makeLatitudeRequest(oldestDate, newestDate, successCallback, failureCallback) { 
     $.ajax({
         url: "https://www.googleapis.com/latitude/v1/location",
         type: "GET",
@@ -56,12 +56,17 @@ function makeLatitudeRequest(oldestDate, newestDate, callback) {
             if (response.data && response.data.items) {
                 newestDate = response.data.items[response.data.items.length - 1].timestampMs - 1;
                 addDataToHeatmap(response.data.items);
-                return makeLatitudeRequest(oldestDate, newestDate, callback);
+                return makeLatitudeRequest(oldestDate, newestDate, successCallback);
             } else {
-                callback();
+                if (!heatmapData || !heatmapData.data || heatmapData.data.length <= 0) {
+                    return failureCallback("Couldn't get any data from Latitude! Have you recorded any?");
+                } else {
+                    return successCallback();
+                }
             }
         },
         error: function(response, status, err) {
+            return;
         }
     });
 }
@@ -104,6 +109,9 @@ function addDataToHeatmap(data) {
             }
         }
     }
+    if (!heatmap) {
+        return;
+    }
     heatmap.setDataSet(heatmapData);
 }
 
@@ -120,8 +128,25 @@ $(function() {
             disableDefaultUI: true,
             scrollwheel: true,
             draggable: true,
-            navigationControl: false,
-            mapTypeControl: false,
+            navigationControl: true,
+            mapTypeControl: true,
+            scaleControl: true,
+            disableDoubleClickZoom: false
+        };
+        map = new google.maps.Map(document.getElementById("heatmap"), myOptions);
+        heatmap = new HeatmapOverlay(map, {"radius":15, "visible":true, "opacity":60});
+    }, function() {
+        //39.8282° N, 98.5795° W is geographic center of USA
+        var myLatlng = new google.maps.LatLng(39.8282, -98.5795);
+        var myOptions = {
+            zoom: 4,
+            center: myLatlng,
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            disableDefaultUI: true,
+            scrollwheel: true,
+            draggable: true,
+            navigationControl: true,
+            mapTypeControl: true,
             scaleControl: true,
             disableDoubleClickZoom: false
         };
@@ -175,6 +200,13 @@ $("#go").click(function() {
     makeLatitudeRequest(oldestDate, newestDate, function() {
         $("#spinner").stop();
         $("#statusbar").fadeOut();
+    }, function(message) {
+        $("#spinner").stop();
+        $("#spinner").fadeOut('fast', function() {
+            $("#statusbar").removeClass("transparent").addClass("opaque");
+            $("#message").fadeIn();
+            $("#message").text(message);
+        });
     });
 });
 

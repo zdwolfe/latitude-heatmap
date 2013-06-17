@@ -19,15 +19,17 @@
     <script type="text/javascript" src="/vendor/spinjs/jquery.spin.js"></script>
 </head>
 <body>
-<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
   ga('create', 'UA-41788733-1', 'zdwolfe.net');
   ga('send', 'pageview');
+
 </script>
+<script src="https://apis.google.com/js/client.js?onload=handleClientLoad"></script>
 <div id="heatmap"></div>
 <div id="statusbar" class="transparent"><div id="spinner"></div><div id="message">Gathering Data From Google Latitude...</div></div>
 <div id="optionsModal" class="modal hide fade" tabindex="-1" role="dialog" aria-hidden="false">
